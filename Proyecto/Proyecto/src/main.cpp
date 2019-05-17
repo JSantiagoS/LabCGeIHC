@@ -65,11 +65,12 @@ Model modelCpu;
 //Model modelLCD;
 Model modelSilla;
 Model modelMesa;
+Model modelLaptop;
 
 
 GLuint textureID1, textureHojasID, textureID3, textureCespedID, textureWaterID, textureCubeTexture, textureMetalID,
 textureConcretoID, textureRocaID, textureParedID, textureParedSalonID, textureTirolID, texturecrID, texturePuertaCristalID,
-textureCpuID, textureNegroID, textureMaderaID, textureMonitorID, textureTecladoID, textureMouseID, texturePizarronID, textureProyectorID, textureBlancoID, texturePisoID;;
+textureCpuID, textureNegroID, textureMaderaID, textureMonitorID, textureTecladoID, textureMouseID, texturePizarronID, textureProyectorID, textureBlancoID, texturePisoID,textureAuxiliarID;;
 GLuint cubeTextureID;
 
 float rot1 = 0.01f;
@@ -257,6 +258,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	modelHombreAdmirando.loadModel("../../models/30817character007/7.obj");
 	modelSilla.loadModel("../../models/Sillas/source/215219/215219.obj");
 	modelMesa.loadModel("../../models/Table/source/SCP table .obj");
+	modelLaptop.loadModel("../../models/laptop/Laptop_High-Polay_HP_BI_2_obj.obj");
 	//modelLCD.loadModel("../../models/lcd/LCD.obj");
 	//modelComputer.loadModel("../../models/computadora/Comp_and_Floppy.obj");
 
@@ -781,7 +783,14 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode
 	if ((glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) && rot1 > -1.49f) {
 		rot1 -= 0.1;
 	}
-
+	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
+		if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+			textureAuxiliarID = textureNegroID;
+		}
+		else {
+			textureAuxiliarID = textureMonitorID;
+		}
+	}
 }
 
 void mouseCallback(GLFWwindow* window, double xpos, double ypos) {
@@ -1846,7 +1855,6 @@ void applicationLoop() {
 
 
 		//////////////////////////Laboratorio interior//////////////////////////////////
-
 				//lado izquierdo
 		float posx = -24.0, posz = 55, aumento = 0;
 		for (int i = 0; i < 3; i++) {
@@ -1871,8 +1879,9 @@ void applicationLoop() {
 			glBindTexture(GL_TEXTURE_2D, textureNegroID);
 			box2.render();
 			//monitor
+
 			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, textureMonitorID);
+			glBindTexture(GL_TEXTURE_2D, textureAuxiliarID);
 			box2.setShader(&shaderLighting);
 			box2.setProjectionMatrix(projection);
 			box2.setViewMatrix(view);
@@ -1922,7 +1931,7 @@ void applicationLoop() {
 			box2.render();
 			//monitor
 			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, textureMonitorID);
+			glBindTexture(GL_TEXTURE_2D, textureAuxiliarID);
 			box2.setShader(&shaderLighting);
 			box2.setProjectionMatrix(projection);
 			box2.setViewMatrix(view);
@@ -1972,7 +1981,7 @@ void applicationLoop() {
 			box2.render();
 			//monitor
 			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, textureMonitorID);
+			glBindTexture(GL_TEXTURE_2D, textureAuxiliarID);
 			box2.setShader(&shaderLighting);
 			box2.setProjectionMatrix(projection);
 			box2.setViewMatrix(view);
@@ -2035,7 +2044,7 @@ void applicationLoop() {
 			box2.render();
 			//monitor
 			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, textureMonitorID);
+			glBindTexture(GL_TEXTURE_2D, textureAuxiliarID);
 			box2.setShader(&shaderLighting);
 			box2.setProjectionMatrix(projection);
 			box2.setViewMatrix(view);
@@ -2085,7 +2094,7 @@ void applicationLoop() {
 			box2.render();
 			//monitor
 			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, textureMonitorID);
+			glBindTexture(GL_TEXTURE_2D, textureAuxiliarID);
 			box2.setShader(&shaderLighting);
 			box2.setProjectionMatrix(projection);
 			box2.setViewMatrix(view);
@@ -2135,7 +2144,7 @@ void applicationLoop() {
 			box2.render();
 			//monitor
 			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, textureMonitorID);
+			glBindTexture(GL_TEXTURE_2D, textureAuxiliarID);
 			box2.setShader(&shaderLighting);
 			box2.setProjectionMatrix(projection);
 			box2.setViewMatrix(view);
@@ -2261,6 +2270,21 @@ void applicationLoop() {
 		modelMesa.setScale(glm::vec3(3.0, 2.7, 1.0));
 		modelMesa.render();
 
+		//laptop profesor
+		modelLaptop.setShader(&shaderLighting);
+		modelLaptop.setProjectionMatrix(projection);
+		modelLaptop.setViewMatrix(view);
+		modelLaptop.setPosition(glm::vec3(-43.0, 3.5, 59.2));
+		modelLaptop.setScale(glm::vec3(0.2, 0.2, 0.2));
+		modelLaptop.render();
+		//silla profesor
+		modelSilla.setShader(&shaderLighting);
+		modelSilla.setProjectionMatrix(projection);
+		modelSilla.setViewMatrix(view);
+		modelSilla.setScale(glm::vec3(2.0, 3.5, 2.0));
+		glm::mat4 matrixSilla7 = glm::translate(glm::mat4(1.0f), glm::vec3(-42, 1.75, 62));
+		matrixSilla7 = glm::rotate(matrixSilla7, glm::radians(45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		modelSilla.render(matrixSilla7);
 
 		/*
 		glActiveTexture(GL_TEXTURE0);
